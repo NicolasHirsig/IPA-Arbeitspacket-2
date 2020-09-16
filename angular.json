@@ -25,7 +25,8 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.scss"
@@ -123,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Angular-chrome-extension"
+    }
+  },
+  "defaultProject": "Angular-chrome-extension",
+  "cli": {
+    "analytics": "1ee0cb2c-cadf-430a-90c1-426216507238"
+  }
 }
