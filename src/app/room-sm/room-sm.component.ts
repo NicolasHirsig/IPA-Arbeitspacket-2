@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomSmComponent implements OnInit {
 
+  roomnr: number = this.getRandom();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  getRandom() {
+    return Math.floor(Math.random() * 10);
+  }
+
 }
+
+export var roomnr;
