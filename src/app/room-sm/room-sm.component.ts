@@ -84,3 +84,5 @@ export class RoomSmComponent implements OnInit {
   //   }
   // }
 }
+
+export var roomnr;
