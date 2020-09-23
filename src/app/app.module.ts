@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
-import { reducer } from './ext.reducer'
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StartupScreenComponent } from './startup-screen/startup-screen.component';
 import { RoomDevComponent } from './room-dev/room-dev.component';
 import { RoomSmComponent } from './room-sm/room-sm.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { RoomSmComponent } from './room-sm/room-sm.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot(reducer)
+    RouterModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

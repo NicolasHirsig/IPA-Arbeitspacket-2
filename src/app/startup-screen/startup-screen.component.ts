@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { changeRole } from '../ext.actions'
+// import { changeRole } from '../ext.actions'
+import { Router } from '@angular/router'
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-startup-screen',
@@ -10,18 +11,17 @@ import { changeRole } from '../ext.actions'
 export class StartupScreenComponent implements OnInit {
 
   role: string;
-  constructor(private store: Store) { }
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
   roleSM(): void {
-    this.role = "Scrum Master";
-    // add router link to SM-View component
+    this.router.navigate(['/roomsm']);
   }
 
   roleDev(): void {
-    this.role = "Developer";
-    // add router link to Dev-View component
+    this.router.navigate(['/roomdev']);
   }
 }

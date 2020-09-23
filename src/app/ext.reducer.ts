@@ -1,23 +1,23 @@
-import { createReducer, on, State, Action } from '@ngrx/store';
-import { getRole } from './ext.actions';
+// import { createReducer, on, State, Action } from '@ngrx/store';
+// import { getRole } from './ext.actions';
 
-interface AppState {
+// interface AppState {
 
-}
+// }
 
-const initialState: AppState = {
-    userProfile: null
-};
+// const initialState: AppState = {
+//     userProfile: null
+// };
 
 
-const appReducer = createReducer(
-    initialState,
-    on(getRole, (state, { payload }) => {
-        console.log(state, payload);
-        return { ...state, payload };
-    })
-);
+// const appReducer = createReducer(
+//     initialState,
+//     on(getRole, (state, { payload }) => {
+//         console.log(state, payload);
+//         return { ...state, payload };
+//     })
+// );
 
-export function reducer(state = initialState, action: Action) {
-    return appReducer(state, action);
-}
+// export function reducer(state = initialState, action: Action) {
+//     return appReducer(state, action);
+// }

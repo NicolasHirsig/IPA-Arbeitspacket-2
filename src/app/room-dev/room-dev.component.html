@@ -1,1 +1,18 @@
-<p>room-dev works!</p>
+<div *ngIf="!channel">
+    <h1>Join a room</h1>
+    <input type="text" name="roomnbr" id="roomnmbr">
+    <p>Type in the room number provided by your scrum master</p>
+
+    <form id="login-form" (ngSubmit)="joinChat()">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="text" name="username" placeholder="Username"
+            [(ngModel)]="username" />
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div *ngIf="channel">
+    <h5>
+        {{ channel.data.name }}
+    </h5>
+</div>
