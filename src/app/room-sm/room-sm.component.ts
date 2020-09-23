@@ -10,6 +10,7 @@ import { Console } from 'console';
 })
 export class RoomSmComponent implements OnInit {
 
+  regexp: RegExp = /^[A-Za-z_]+$/;
   readyToJoin: Boolean = false;
   title = 'angular-chat';
   channel: ChannelData;
@@ -28,7 +29,15 @@ export class RoomSmComponent implements OnInit {
   setUsername(uname: Text) {
     this.username = uname;
     this.username.toString();
-    this.joinChat()
+    if (!this.regexp.test(this.username)) {
+      document.getElementById("regexWarning").style.backgroundColor = "red";
+      document.getElementById("regexWarning").style.backgroundColor = "red";
+      document.getElementById("regexWarning").innerHTML = "Only alphanumeric characters and underscore are allowed. (Spaces not permitted)";
+    }
+    else {
+      this.joinChat()
+    }
+
   }
 
   async joinChat() {

@@ -2,6 +2,7 @@
     <div *ngIf="!readyToJoin">
         <label for="uname">Set your Username:</label><br>
         <input type="text" [(ngModel)]="uname"><br><br>
+        <p id="regexWarning"></p>
         <button (click)="setUsername(uname)">Submit</button>
     </div>
     <div *ngIf="readyToJoin">
