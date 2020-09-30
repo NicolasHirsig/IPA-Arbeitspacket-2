@@ -29,6 +29,7 @@ export class RoomSmComponent implements OnInit {
   setUsername(uname: Text) {
     this.username = uname;
     this.username.toString();
+    console.log(this.regexp.test(this.username))
     if (!this.regexp.test(this.username)) {
       document.getElementById("regexWarning").style.backgroundColor = "red";
       document.getElementById("regexWarning").style.backgroundColor = "red";

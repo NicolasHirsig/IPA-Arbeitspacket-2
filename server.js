@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { StreamChat } = require('stream-chat');
+const { query } = require('express');
 
 const app = express();
 
@@ -20,39 +21,59 @@ const serverSideClient = new StreamChat(
 
 // route join expects username in request body
 app.post('/join', async (req, res) => {
-    const { username } = req.body;
+    const username = req.body.username;
     const token = serverSideClient.createToken(username);
     try {
         await serverSideClient.updateUser(
             {
                 id: username,
-                name: username,
+                name: username
             },
             token
         );
-
     } catch (err) {
         console.log(err);
     }
 
-    const admin = { id: 'admin' };
+    const moderator = { id: 'moderator' };
     const channel = serverSideClient.channel('team', 'talkshop', {
         name: 'Talk Shop',
-        created_by: admin,
+        created_by: moderator,
     });
 
-    try {
-        await channel.create();
-        await channel.addMembers([username, 'admin']);
-        console.log("---------User '" + username + "' joined the room '" + channel.data.name + "'");
-    } catch (err) {
-        console.log(err);
+    const channels = await serverSideClient.queryChannels({ name: "Talk Shop" });
+    // if channel doesnt exist, create it and add user as Moderator. If it does, add user as member
+    if (!channels.length) {
+        try {
+            await channel.create();
+            await channel.addModerators([username]);
+            console.log("---------Moderator '" + username + "' joined the room '" + channel.data.name + "'");
+        } catch (err) {
+            console.log(err);
+        }
+    } else {
+        try {
+            await channel.addMembers([username]);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    // returns token to enable user authentification on frontend
+    console.log(Object.keys(channel.state.members));
+
     return res
         .status(200)    // the Success-response :D
-        .json({ user: { username }, token, api_key: process.env.STREAM_API_KEY });
+        .json({ channel: "Talk Shop", token, api_key: process.env.STREAM_API_KEY });
+});
+
+app.post('/delete', async (req, res) => {
+
+    // delete all channels that dont have users in them
+    await channel.state.delete();
+
+    return res
+        .status(200)    // the Success-response :D
+        .json({ token, api_key: process.env.STREAM_API_KEY });
 });
 
 const server = app.listen(process.env.PORT || 5500, () => {
