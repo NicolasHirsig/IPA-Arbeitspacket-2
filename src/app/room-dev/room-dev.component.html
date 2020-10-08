@@ -1,18 +1,31 @@
-<div *ngIf="!channel">
-    <h1>Join a room</h1>
-    <input type="text" name="roomnbr" id="roomnmbr">
-    <p>Type in the room number provided by your scrum master</p>
+<body>
+    <div *ngIf="!readyToJoin">
+        <label for="uname">Set your Username:</label><br>
+        <input type="text" [(ngModel)]="uname"><br><br>
+        <label for="roomnumber">Room Number given by SM:</label><br>
+        <input type="text" [(ngModel)]="roomnumber"><br><br>
+        <p id="regexnameWarning"></p>
+        <button (click)="setupRoom(uname,roomnumber)">Join Room</button>
+    </div>
+    <div *ngIf="readyToJoin">
+        <h1>You can vote now!</h1>
+        <h2>Your room number: {{roomnumber}}</h2>
+        <br><br><br>
+        <button (click)="sendMessage(0.5)">0.5</button>
+        <button (click)="sendMessage(1)">1</button>
+        <button (click)="sendMessage(2)">2</button>
+        <button (click)="sendMessage(3)">3</button>
+        <button (click)="sendMessage(5)">5</button>
+        <button (click)="sendMessage(8)">8</button>
+        <button (click)="sendMessage(13)">13</button>
+        <button (click)="sendMessage(20)">20</button>
+        <div *ngIf="messageSent">
+            <p> {{ channel.state.messages[ channel.state.messages.length - 1 ].text }}</p>
+            <ng-template>
+                {{ message.text }}
+            </ng-template>
+        </div>
 
-    <form id="login-form" (ngSubmit)="joinChat()">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="text" name="username" placeholder="Username"
-            [(ngModel)]="username" />
-        <button type="submit">Submit</button>
-    </form>
-</div>
 
-<div *ngIf="channel">
-    <h5>
-        {{ channel.data.name }}
-    </h5>
-</div>
+    </div>
+</body>

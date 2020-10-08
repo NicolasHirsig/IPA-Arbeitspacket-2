@@ -2,12 +2,15 @@
     <div *ngIf="!readyToJoin">
         <label for="uname">Set your Username:</label><br>
         <input type="text" [(ngModel)]="uname"><br><br>
-        <p id="regexWarning"></p>
-        <button (click)="setUsername(uname)">Submit</button>
+        <label for="roomnumber">Set your room Number:</label><br>
+        <input type="text" [(ngModel)]="roomnumber"><br><br>
+        <p id="regexnameWarning"></p>
+        <button (click)="setupRoom(uname,roomnumber)">Create Room</button>
     </div>
     <div *ngIf="readyToJoin">
         <h1>Developers can now Join!</h1>
-        <h2>Your room number:</h2>
+        <h2>Your room number: {{roomnumber}}</h2>
+        <button class="btn2" (click)="removeRoom()">remove room</button>
         <br><br><br>
         <button>0.5</button>
         <button>1</button>

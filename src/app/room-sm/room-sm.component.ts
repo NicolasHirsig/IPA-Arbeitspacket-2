@@ -10,11 +10,13 @@ import { Console } from 'console';
 })
 export class RoomSmComponent implements OnInit {
 
-  regexp: RegExp = /^[A-Za-z_]+$/;
+  regexuname: RegExp = /^[A-Za-z_]+$/;
+  regexrnumber: RegExp = /\d\d\d/
   readyToJoin: Boolean = false;
   title = 'angular-chat';
   channel: ChannelData;
   username;
+  roomnumber;
   messages: Message[] = [];
   newMessage = '';
   channelList: ChannelData[];
@@ -26,28 +28,39 @@ export class RoomSmComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  setUsername(uname: Text) {
+  setupRoom(uname: Text, roomnumber: Text) {
     this.username = uname;
     this.username.toString();
-    console.log(this.regexp.test(this.username))
-    if (!this.regexp.test(this.username)) {
-      document.getElementById("regexWarning").style.backgroundColor = "red";
-      document.getElementById("regexWarning").style.backgroundColor = "red";
-      document.getElementById("regexWarning").innerHTML = "Only alphanumeric characters and underscore are allowed. (Spaces not permitted)";
+    this.roomnumber = roomnumber;
+    this.roomnumber.toString();
+
+    if (!this.regexuname.test(this.username) || !this.regexrnumber.test(this.roomnumber)) {
+      document.getElementById("regexnameWarning").style.backgroundColor = "red";
+      document.getElementById("regexnameWarning").style.backgroundColor = "red";
+      document.getElementById("regexnameWarning").innerHTML = "Username :Only alphanumeric characters and underscore are allowed (Spaces not permitted). <br> Room-Number: Only numbers allowed, min 3 digits.";
     }
     else {
-      this.joinChat()
+      this.joinChat();
     }
 
   }
 
+  // u wanted to change the reference of the roomnumber since u need to give it with the API-POST to the new JoinSM-route
   async joinChat() {
-    const { username } = this;
+    const username = this.username;
+    const roomnumber = this.roomnumber;
+
     try {
       // calls server on the join route with username, then recieves token and api key
-      const response = await axios.post('http://localhost:5500/join', {
+      const response = await axios.post('http://localhost:5500/create', {
         username,
+        roomnumber
       });
+      console.log(response.status);
+      if (response.status == 202) {
+        document.getElementById("regexnameWarning").innerHTML = "Room already exists";
+        return;
+      }
       const { token } = response.data;
       const apiKey = response.data.api_key;
 
@@ -62,7 +75,7 @@ export class RoomSmComponent implements OnInit {
       );
 
       // connect to channel talkshop channel and listen for new messages
-      const channel = this.chatClient.channel('team', 'talkshop');
+      const channel = this.chatClient.channel('team', roomnumber);
       await channel.watch();
       this.channel = channel;
       this.readyToJoin = true;
@@ -79,20 +92,15 @@ export class RoomSmComponent implements OnInit {
     }
   }
 
-  // async sendMessage() {
-  //   if (this.newMessage.trim() === '') {
-  //     return;
-  //   }
+  async removeRoom() {
+    const username = this.username;
+    const roomnumber = this.roomnumber;
 
-  //   try {
-  //     await this.channel.sendMessage({
-  //       text: this.newMessage,
-  //     });
-  //     this.newMessage = '';
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+    const response = await axios.post('http://localhost:5500/delete', {
+      username,
+      roomnumber
+    });
+    this.readyToJoin = false;
+
+  }
 }
-
-export var roomnr;
