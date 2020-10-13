@@ -26,6 +26,7 @@ export class RoomSmComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log()
   }
 
   setupRoom(uname: Text, roomnumber: Text) {
@@ -79,13 +80,19 @@ export class RoomSmComponent implements OnInit {
       await channel.watch();
       this.channel = channel;
       this.readyToJoin = true;
-      console.log("BACKEND: Room Created!")
 
       this.messages = channel.state.messages;
+
       channel.on('message.new', event => {
         // add new message to message-array
         this.messages = [...this.messages, event.message];
       });
+
+      channel.on('message.updated', event => {
+        // add new message to message-array
+        this.messages = channel.state.messages;
+      });
+
     } catch (err) {
       console.log(err);
       return;

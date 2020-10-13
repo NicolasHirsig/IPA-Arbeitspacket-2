@@ -19,12 +19,12 @@
         <button (click)="sendMessage(8)">8</button>
         <button (click)="sendMessage(13)">13</button>
         <button (click)="sendMessage(20)">20</button>
-        <div *ngIf="messageSent">
-            <p> {{ channel.state.messages[ channel.state.messages.length - 1 ].text }}</p>
-            <ng-template>
-                {{ message.text }}
-            </ng-template>
-        </div>
+        <button (click)="sendMessage('?')">?</button>
+        <p> Current: {{ channel.state.messages[ channel.state.messages.length - 1 ].text }}</p>
+        <li *ngFor="let message of messages">
+            {{ message.text }}
+        </li>
+
 
 
     </div>

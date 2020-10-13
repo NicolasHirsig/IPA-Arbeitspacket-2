@@ -12,13 +12,8 @@
         <h2>Your room number: {{roomnumber}}</h2>
         <button class="btn2" (click)="removeRoom()">remove room</button>
         <br><br><br>
-        <button>0.5</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>5</button>
-        <button>8</button>
-        <button>13</button>
-        <button>20</button>
+        <li *ngFor="let message of messages">
+            {{ message.text }}
+        </li>
     </div>
 </body>
