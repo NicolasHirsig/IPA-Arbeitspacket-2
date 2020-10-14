@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { StreamChat, ChannelData, Message, User } from 'stream-chat';
+import { StreamChat, ChannelData, Message, User, AnyResource } from 'stream-chat';
 import axios from 'axios';
 import { type } from 'os';
 import { randomBytes } from 'crypto';
@@ -15,7 +15,7 @@ export class RoomDevComponent implements OnInit {
 
   regexuname: RegExp = /^[A-Za-z_]+$/;
   regexrnumber: RegExp = /\d\d\d/
-  readyToJoin: Boolean = false;
+  readyToJoin: Boolean;
   title = 'angular-chat';
   channel: ChannelData;
   username;
@@ -25,7 +25,9 @@ export class RoomDevComponent implements OnInit {
   chatClient: any;
   currentUser: User;
   voteStr: string;
-  textid: any;
+  message: any;
+  importantMessage: string;
+  showMessage: boolean;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -39,9 +41,9 @@ export class RoomDevComponent implements OnInit {
     this.roomnumber.toString();
 
     if (!this.regexuname.test(this.username) || !this.regexrnumber.test(this.roomnumber)) {
-      document.getElementById("regexnameWarning").style.backgroundColor = "red";
-      document.getElementById("regexnameWarning").style.backgroundColor = "red";
-      document.getElementById("regexnameWarning").innerHTML = "Username :Only alphanumeric characters and underscore are allowed (Spaces not permitted). <br> Room-Number: Only numbers allowed, min 3 digits.";
+      document.getElementById("regexnameWarning").style.backgroundColor = "#CB1A11";
+      document.getElementById("regexnameWarning").style.color = "white";
+      document.getElementById("regexnameWarning").innerHTML = "Username: Only alphanumeric characters and underscore (no spaces). <br> Room-Number: Only numbers allowed, min 3 digits.";
     }
     else {
       this.joinChat();
@@ -50,16 +52,15 @@ export class RoomDevComponent implements OnInit {
 
   // u wanted to change the reference of the roomnumber since u need to give it with the API-POST to the new JoinSM-route
   async joinChat() {
-    const username = this.username;
-    const roomnumber = this.roomnumber;
     try {
       // calls server on the join route with username, then recieves token and api key
       const response = await axios.post('http://localhost:5500/join', {
-        username,
-        roomnumber
+        username: this.username,
+        roomnumber: this.roomnumber
       });
 
       const { token } = response.data;
+      console.log(response.data);
       const apiKey = response.data.api_key;
       this.chatClient = new StreamChat(apiKey);
 
@@ -70,14 +71,14 @@ export class RoomDevComponent implements OnInit {
 
       this.currentUser = await this.chatClient.setUser(
         {
-          id: username,
-          name: username,
+          id: this.username,
+          name: this.username,
         },
         token
       );
 
       // connect to channel and listen for new messages
-      const channel = this.chatClient.channel('team', roomnumber);
+      const channel = this.chatClient.channel('team', this.roomnumber);
       await channel.watch();
       this.channel = channel;
       this.readyToJoin = true;
@@ -90,37 +91,39 @@ export class RoomDevComponent implements OnInit {
       });
 
       channel.on('message.updated', event => {
-        // add new message to message-array
         this.messages = channel.state.messages;
+        console.log(event)
+        if (event.message.user.role === "admin") {
+          // if event.message.reveal exists, return its value (in typescrit :C)
+          this.showMessage = event.message.reveal ? event.message.reveal : false;
+        }
       });
 
-      const rand = Math.floor(Math.random() * Math.floor(300));
-      this.textid = rand.toString(2);
-
       try {
-        await this.channel.sendMessage({
-          id: this.textid,
+        this.message = await this.channel.sendMessage({
           text: ""
         });
       } catch (err) {
         console.log(err);
       }
+
+      console.log(this.messages);
+
     } catch (err) {
       console.log(err);
       return;
     }
   }
 
-  async sendMessage(vote) {
-    this.voteStr = vote.toString();
+  async updateMessage(vote) {
     if (this.voteStr === '') {
       return;
     }
 
-    const message = { id: this.textid, text: this.voteStr }
-
+    this.message.message.text = vote;
     try {
-      await this.chatClient.updateMessage(message);
+      console.log(this.message);
+      await this.chatClient.updateMessage(this.message.message);
     } catch (err) {
       console.log(err);
     }

@@ -41,7 +41,8 @@ app.post('/create', async (req, res) => {
         await serverSideClient.updateUser(
             {
                 id: username,
-                name: username
+                name: username,
+                role: "admin"
             },
             token
         );
@@ -119,8 +120,7 @@ app.post('/join', async (req, res) => {
         }
     } else {
         return res
-            .status(202)
-            .json({ error: "room not found." });
+            .status(202);
     }
 
     console.log("= users currently in room [ " + Object.keys(channel.state.members) + "," + username + " ]");
@@ -131,38 +131,17 @@ app.post('/join', async (req, res) => {
         .json({ channel: "Talk Shop", token, api_key: process.env.STREAM_API_KEY });
 });
 
-
-
-app.post('/remove', async (req, res) => {
-    const username = req.body.username;
-    const token = serverSideClient.createToken(username);
-    const moderator = { id: 'moderator' };
-    const channel = await getChannel("talkshop");
-
-    const user = channel.queryMembers({ id: 'thick' });
-
-    console.log(user)
-
-    // channel.removeMembers(['user[0]']) or directly like channel.removeMembers([username])
-
-    return res
-        .status(200)
-        .json({ token, api_key: process.env.STREAM_API_KEY });
-});
-
 app.post('/delete', async (req, res) => {
-    const username = req.body.username;
-    const roomnumber = req.body.roomnumber;
-    const token = serverSideClient.createToken(username);
-    const channel = await getChannel(roomnumber);
-
-    await channel.delete();
-
-    console.log("Moderator " + username + " deleted channel " + channel._data.name);
+    try {
+        const channel = await getChannel(req.body.roomnumber);
+        await channel.delete();
+    } catch (err) {
+        console.log(err);
+    }
 
     return res
         .status(200)
-        .json({ token, api_key: process.env.STREAM_API_KEY });
+        .json({ api_key: process.env.STREAM_API_KEY });
 });
 
 const server = app.listen(process.env.PORT || 5500, () => {

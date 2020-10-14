@@ -1,26 +1,65 @@
-#window {
-    min-width: 200px;
-    max-width: 200px;
+  #window {
+    min-width: 250px;
+    max-width: 250px;
     min-height: 200px;
     max-height: 300px;
     position: relative;
     vertical-align:middle;
   }
 
+  body {
+    background: #CFD8DC;
+    font-family: arial Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  }
+
+  .component {
+    min-width: 550px;
+    max-width: 550px;
+    min-height: 400px;
+    max-height: 400px;
+    position: relative;
+    vertical-align:middle;
+  }
+
+  .component2 {
+    min-width: 550px;
+    max-width: 550px;
+    min-height: 200px;
+    max-height: 200px;
+    position: relative;
+    vertical-align:middle;
+  }
+
   p {
     font-size: 200%;
-    padding: 5px 12px 0px 12px ;
   }
   
   h1 {
-    color: #53637D;
-    font: 26px/1.2 Helvetica, sans-serif;
+    font-weight: bold !important;
+    color: #D3004B;
+    font: 30px/1.2 Helvetica, sans-serif;
     font-size: 250%;
     margin: 0;
     padding-bottom: 4px;
     text-shadow: white 0 1px 2px;
   }
+
+  .panel {
+    background-color: #FAFAFA;
+    border-radius: 16px;
+    text-align: center;
+    padding: 15px 25px 30px 25px;
+    width: 200px;
+  }
   
+  .panel2 {
+    background-color: #FAFAFA;
+    border-radius: 16px;
+    text-align: center;
+    padding: 15px 25px 30px 25px;
+    width: 500px;
+  }
+
   label {
     color: #222;
     font: 18px/1.4 Helvetica, sans-serif;
@@ -34,15 +73,34 @@
   }
   
   button {
+    padding: 14px 30px;
     font-size: 200%;
+    font-weight: bold;
     display: block;
-    border-radius: 2px;
+    border-radius: 8px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     -webkit-user-select: none;
-    background: -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
     border: 1px solid #AAA;
-    color: #444;
+    color: #34515E;
     min-width: 4em;
-    padding: 3px 12px;
     display: inline;
   }
+
+  button:hover {
+    background-color: #F50057;
+  }
+
+  ul {
+    background: #D3004B;
+    padding: 20px;
+    width: 200 !important;
+  }
+  
+  ul li {
+    font-size: 150%;
+    background: #F50057;
+    padding: 5px;
+    display: inline-block;
+    margin-left: 35px;
+  }
+  

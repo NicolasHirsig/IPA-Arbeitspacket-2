@@ -11,8 +11,7 @@ import { Console } from 'console';
 export class RoomSmComponent implements OnInit {
 
   regexuname: RegExp = /^[A-Za-z_]+$/;
-  regexrnumber: RegExp = /\d\d\d/
-  readyToJoin: Boolean = false;
+  readyToCreate: Boolean;
   title = 'angular-chat';
   channel: ChannelData;
   username;
@@ -22,6 +21,8 @@ export class RoomSmComponent implements OnInit {
   channelList: ChannelData[];
   chatClient: any;
   currentUser: User;
+  message: any;
+  showMessage: boolean;
 
   constructor() { }
 
@@ -32,22 +33,43 @@ export class RoomSmComponent implements OnInit {
   setupRoom(uname: Text, roomnumber: Text) {
     this.username = uname;
     this.username.toString();
-    this.roomnumber = roomnumber;
-    this.roomnumber.toString();
+    const rand = Math.floor(Math.random() * Math.floor(9000));
+    // due to the random number being converted to string, the number gets changed but stays in the realm (dont ask me why)
+    this.roomnumber = rand.toString(8);
 
-    if (!this.regexuname.test(this.username) || !this.regexrnumber.test(this.roomnumber)) {
-      document.getElementById("regexnameWarning").style.backgroundColor = "red";
-      document.getElementById("regexnameWarning").style.backgroundColor = "red";
-      document.getElementById("regexnameWarning").innerHTML = "Username :Only alphanumeric characters and underscore are allowed (Spaces not permitted). <br> Room-Number: Only numbers allowed, min 3 digits.";
+    if (!this.regexuname.test(this.username)) {
+      document.getElementById("regexnameWarning").style.backgroundColor = "#CB1A11";
+      document.getElementById("regexnameWarning").style.color = "white";
+      document.getElementById("regexnameWarning").innerHTML = "Username: Only alphanumeric characters and underscore (no spaces).";
     }
     else {
-      this.joinChat();
+      this.createChat();
     }
-
   }
 
-  // u wanted to change the reference of the roomnumber since u need to give it with the API-POST to the new JoinSM-route
-  async joinChat() {
+  async resetMessages() {
+    for (let i in this.messages) {
+      let j: number = +i;
+      if (this.messages[j + 1]) {
+        console.log(typeof this.messages[j + 1].id);
+        const message = { id: this.messages[j + 1].id, text: "" }
+        try {
+          await this.chatClient.updateMessage(message);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+    this.message.message.reveal = false;
+    try {
+      await this.chatClient.updateMessage(this.message.message);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  async createChat() {
     const username = this.username;
     const roomnumber = this.roomnumber;
 
@@ -71,27 +93,37 @@ export class RoomSmComponent implements OnInit {
         {
           id: username,
           name: username,
+          role: "admin"
         },
         token
       );
 
-      // connect to channel talkshop channel and listen for new messages
       const channel = this.chatClient.channel('team', roomnumber);
       await channel.watch();
       this.channel = channel;
-      this.readyToJoin = true;
-
-      this.messages = channel.state.messages;
+      this.readyToCreate = true;
 
       channel.on('message.new', event => {
-        // add new message to message-array
         this.messages = [...this.messages, event.message];
       });
 
       channel.on('message.updated', event => {
-        // add new message to message-array
         this.messages = channel.state.messages;
+        console.log(event)
+        if (event.message.user.role === "admin") {
+          // if event.message.reveal exists, return its value (in typescrit :C)
+          this.showMessage = event.message.reveal ? event.message.reveal : false;
+        }
       });
+
+      try {
+        this.message = await this.channel.sendMessage({
+          text: "Current Votes:",
+          reveal: false
+        });
+      } catch (err) {
+        console.log(err);
+      }
 
     } catch (err) {
       console.log(err);
@@ -99,15 +131,25 @@ export class RoomSmComponent implements OnInit {
     }
   }
 
+  async revealMessages() {
+    this.message.message.reveal = true;
+    try {
+      await this.chatClient.updateMessage(this.message.message);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async removeRoom() {
-    const username = this.username;
-    const roomnumber = this.roomnumber;
-
-    const response = await axios.post('http://localhost:5500/delete', {
-      username,
-      roomnumber
-    });
-    this.readyToJoin = false;
-
+    this.message.message.text = "the room has been closed."
+    try {
+      await this.chatClient.updateMessage(this.message.message);
+      await axios.post('http://localhost:5500/delete', {
+        roomnumber: this.roomnumber
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    this.readyToCreate = false;
   }
 }

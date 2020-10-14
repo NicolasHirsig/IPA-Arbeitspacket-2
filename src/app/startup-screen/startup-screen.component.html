@@ -1,12 +1,17 @@
 <body id="window">
     <h1>Choose your role</h1> <br>
-    <button (click)="roleSM()">Scrum Master</button>
-    <p>As scrum master you will be able to create a room, start a new round and invite developers. You will *not* have
-        the
-        right to vote</p>
-    <br />
-    <br />
-    <button (click)="roleDev()">Developer</button>
-    <p>As developer you will be able to join a preoviously created room and have access to vote.</p><br><br>
+    <div class="panel">
+        <button (click)="roleSM()">Scrum Master</button>
+        <p>As scrum master you will be able to create a room, start a new round and invite developers. You will *not*
+            have the right to vote</p>
+    </div>
+    <br>
+    <br>
+    <div class="panel">
+        <button (click)="roleDev()">Developer</button>
+        <p>As developer you will be able to join a preoviously created room and have access to vote.</p>
+    </div>
+    <br>
+    <br>
     <router-outlet></router-outlet>
 </body>

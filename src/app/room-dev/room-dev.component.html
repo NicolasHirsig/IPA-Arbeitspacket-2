@@ -1,5 +1,6 @@
-<body>
-    <div *ngIf="!readyToJoin">
+<body class="component">
+    <div *ngIf="!readyToJoin" class="panel2">
+        <h1>Join a Room</h1>
         <label for="uname">Set your Username:</label><br>
         <input type="text" [(ngModel)]="uname"><br><br>
         <label for="roomnumber">Room Number given by SM:</label><br>
@@ -7,25 +8,24 @@
         <p id="regexnameWarning"></p>
         <button (click)="setupRoom(uname,roomnumber)">Join Room</button>
     </div>
-    <div *ngIf="readyToJoin">
+    <div *ngIf="readyToJoin" class="panel2">
         <h1>You can vote now!</h1>
         <h2>Your room number: {{roomnumber}}</h2>
         <br><br><br>
-        <button (click)="sendMessage(0.5)">0.5</button>
-        <button (click)="sendMessage(1)">1</button>
-        <button (click)="sendMessage(2)">2</button>
-        <button (click)="sendMessage(3)">3</button>
-        <button (click)="sendMessage(5)">5</button>
-        <button (click)="sendMessage(8)">8</button>
-        <button (click)="sendMessage(13)">13</button>
-        <button (click)="sendMessage(20)">20</button>
-        <button (click)="sendMessage('?')">?</button>
-        <p> Current: {{ channel.state.messages[ channel.state.messages.length - 1 ].text }}</p>
-        <li *ngFor="let message of messages">
-            {{ message.text }}
-        </li>
-
-
-
+        <button (click)="updateMessage('0.5')">0.5</button>
+        <button (click)="updateMessage('1')">1</button>
+        <button (click)="updateMessage('2')">2</button>
+        <button (click)="updateMessage('3')">3</button>
+        <button (click)="updateMessage('5')">5</button>
+        <button (click)="updateMessage('8')">8</button>
+        <button (click)="updateMessage('13')">13</button>
+        <button (click)="updateMessage('20')">20</button>
+        <button (click)="updateMessage('?')">?</button>
+        <p> Most recent: {{ channel.state.messages[ channel.state.messages.length - 1 ].text }}</p>
+        <ul style="list-style-type:none;">
+            <li *ngFor="let message of messages; let i = index">
+                <p *ngIf="showMessage || message.user.id == username || i == 0"> {{ message.text }} </p>
+            </li>
+        </ul>
     </div>
 </body>

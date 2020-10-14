@@ -1,18 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendor"],{
 
-/***/ "../../../node_modules/form-data/lib/browser.js":
-/*!************************************************************!*\
-  !*** C:/Users/hirsi/node_modules/form-data/lib/browser.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* eslint-env browser */
-module.exports = typeof self == 'object' ? self.FormData : window.FormData;
-
-
-/***/ }),
-
 /***/ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js":
 /*!**********************************************************************!*\
   !*** ./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js ***!
@@ -55335,6 +55322,19 @@ function fromByteArray (uint8) {
 
 /***/ }),
 
+/***/ "./node_modules/form-data/lib/browser.js":
+/*!***********************************************!*\
+  !*** ./node_modules/form-data/lib/browser.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* eslint-env browser */
+module.exports = typeof self == 'object' ? self.FormData : window.FormData;
+
+
+/***/ }),
+
 /***/ "./node_modules/isomorphic-ws/browser.js":
 /*!***********************************************!*\
   !*** ./node_modules/isomorphic-ws/browser.js ***!
@@ -68002,7 +68002,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var isomorphic_ws__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(isomorphic_ws__WEBPACK_IMPORTED_MODULE_13__);
 /* harmony import */ var base64_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! base64-js */ "./node_modules/base64-js/index.js");
 /* harmony import */ var base64_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(base64_js__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var form_data__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! form-data */ "../../../node_modules/form-data/lib/browser.js");
+/* harmony import */ var form_data__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! form-data */ "./node_modules/form-data/lib/browser.js");
 /* harmony import */ var form_data__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(form_data__WEBPACK_IMPORTED_MODULE_15__);
 
 
