@@ -51,8 +51,7 @@ export class RoomSmComponent implements OnInit {
     for (let i in this.messages) {
       let j: number = +i;
       if (this.messages[j + 1]) {
-        console.log(typeof this.messages[j + 1].id);
-        const message = { id: this.messages[j + 1].id, text: "" }
+        const message = { id: this.messages[j + 1].id, text: "-" }
         try {
           await this.chatClient.updateMessage(message);
         } catch (err) {
@@ -118,8 +117,9 @@ export class RoomSmComponent implements OnInit {
 
       try {
         this.message = await this.channel.sendMessage({
-          text: "Current Votes:",
-          reveal: false
+          text: "Votes:",
+          reveal: false,
+          deleted: false,
         });
       } catch (err) {
         console.log(err);
@@ -132,6 +132,17 @@ export class RoomSmComponent implements OnInit {
   }
 
   async revealMessages() {
+
+    // iterate through message array to count them all together
+    let k: number = 0;
+    for (let i in this.messages) {
+      let j: number = +i;
+      if (this.messages[j + 1] && this.messages[j + 1].text !== "?" && this.messages[j + 1].text !== "-") {
+        k = k + +this.messages[j + 1].text;
+      }
+    }
+    k = k / (this.messages.length - 1);
+    this.message.message.text = "Ø = " + k;
     this.message.message.reveal = true;
     try {
       await this.chatClient.updateMessage(this.message.message);
@@ -141,9 +152,13 @@ export class RoomSmComponent implements OnInit {
   }
 
   async removeRoom() {
-    this.message.message.text = "the room has been closed."
     try {
-      await this.chatClient.updateMessage(this.message.message);
+      this.message.message.deleted = true;
+      try {
+        await this.chatClient.updateMessage(this.message.message);
+      } catch (err) {
+        console.log(err);
+      }
       await axios.post('http://localhost:5500/delete', {
         roomnumber: this.roomnumber
       });
@@ -151,5 +166,6 @@ export class RoomSmComponent implements OnInit {
       console.log(err);
     }
     this.readyToCreate = false;
+    this.messages = []; // emptying the messages array so it dont keep the old ones
   }
 }

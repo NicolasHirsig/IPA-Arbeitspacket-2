@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 // import { changeRole } from '../ext.actions'
 import { Router } from '@angular/router'
 import { RouterModule } from '@angular/router';
+import axios from 'axios';
 
 @Component({
   selector: 'app-startup-screen',

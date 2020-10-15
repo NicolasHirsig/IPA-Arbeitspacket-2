@@ -51,36 +51,18 @@ app.post('/create', async (req, res) => {
     }
 
     const channels = await serverSideClient.queryChannels({ id: roomnumber });
-    console.log(">------------------- " + roomnumber + " -----------------------------")
     if (!channels.length) {
         try {
             await channel.create();
             await channel.addModerators([username]);
-            console.log("+ Moderator '" + username + "' created the room '" + channel.data.name + "'");
         } catch (err) {
             console.log(err);
         }
     } else {
-        console.log(username)
-        // special case to delete rooms
-        if (username == "aadmin") {
-            try {
-                await channel.addModerators([username]);
-                console.log("+ ADMIN JOINED");
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        else {
-            return res
-                .status(202)
-                .json({ error: "room already exists." });
-        }
+        return res
+            .status(202)
+            .json();
     }
-
-    console.log("= users currently in room [ " + Object.keys(channel.state.members) + "," + username + " ]");
-    console.log("-----------------------------------------------------<")
-
     return res
         .status(200) // success!
         .json({ channel: "Talk Shop", token, api_key: process.env.STREAM_API_KEY });
@@ -109,23 +91,25 @@ app.post('/join', async (req, res) => {
         console.log(err);
     }
 
-    const channels = await serverSideClient.queryChannels({ id: roomnumber });
-    console.log(">------------------- " + roomnumber + " -----------------------------")
-    if (channels.length) {
+    const channelsquery = await serverSideClient.queryChannels({ id: roomnumber });
+    if (channelsquery.length) {
+        for (channeluser in channelsquery[0].state.members) {
+            if (channeluser == username) {
+                return res
+                    .status(203)
+                    .json();
+            }
+        }
         try {
             await channel.addMembers([username]);
-            console.log("+ User '" + username + "' joined the room '" + channel._data.name + "'");
         } catch (err) {
             console.log(err);
         }
     } else {
         return res
-            .status(202);
+            .status(202)
+            .json();
     }
-
-    console.log("= users currently in room [ " + Object.keys(channel.state.members) + "," + username + " ]");
-    console.log("-----------------------------------------------------<")
-
     return res
         .status(200) // success!
         .json({ channel: "Talk Shop", token, api_key: process.env.STREAM_API_KEY });
@@ -143,6 +127,21 @@ app.post('/delete', async (req, res) => {
         .status(200)
         .json({ api_key: process.env.STREAM_API_KEY });
 });
+
+app.post('/deleteChannels', async (req, res) => {
+    try {
+        const channels = await serverSideClient.queryChannels({});
+        for (const c of channels) {
+            console.log(c.cid);
+        }
+    } catch (err) {
+        console.log(err)
+    }
+    return res
+        .status(200)
+        .json({});
+});
+
 
 const server = app.listen(process.env.PORT || 5500, () => {
     const { port } = server.address();

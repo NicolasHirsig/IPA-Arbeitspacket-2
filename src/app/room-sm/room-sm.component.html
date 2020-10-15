@@ -1,5 +1,6 @@
 <body>
-    <div *ngIf="!readyToCreate" class="panel2 component2">
+    <div *ngIf="!readyToCreate" class="panel2">
+        <h1>Create a Room</h1>
         <label for="uname">Set your Username:</label><br>
         <input type="text" [(ngModel)]="uname"><br><br>
         <label> Your room number will be generated randomly</label><br>

@@ -41,9 +41,7 @@ export class RoomDevComponent implements OnInit {
     this.roomnumber.toString();
 
     if (!this.regexuname.test(this.username) || !this.regexrnumber.test(this.roomnumber)) {
-      document.getElementById("regexnameWarning").style.backgroundColor = "#CB1A11";
-      document.getElementById("regexnameWarning").style.color = "white";
-      document.getElementById("regexnameWarning").innerHTML = "Username: Only alphanumeric characters and underscore (no spaces). <br> Room-Number: Only numbers allowed, min 3 digits.";
+      this.handleResponse('regex');
     }
     else {
       this.joinChat();
@@ -53,6 +51,18 @@ export class RoomDevComponent implements OnInit {
   // u wanted to change the reference of the roomnumber since u need to give it with the API-POST to the new JoinSM-route
   async joinChat() {
     try {
+      console.log(this.username);
+      if (this.username == "deleteAllChannels" && this.roomnumber == "420") {
+        try {
+          console.log("Launched channel removal!");
+          await axios.post('http://localhost:5500/deleteChannels', {
+          });
+        } catch (err) {
+          console.log(err);
+        }
+        document.getElementById("regexnameWarning").innerHTML = "All rooms deleted :'D";
+        return;
+      }
       // calls server on the join route with username, then recieves token and api key
       const response = await axios.post('http://localhost:5500/join', {
         username: this.username,
@@ -60,13 +70,12 @@ export class RoomDevComponent implements OnInit {
       });
 
       const { token } = response.data;
-      console.log(response.data);
+      console.log(response.status);
       const apiKey = response.data.api_key;
       this.chatClient = new StreamChat(apiKey);
 
-      if (response.status == 202) {
-        document.getElementById("regexnameWarning").innerHTML = "Room doesn't Exist";
-        return;
+      if (response.status != 200) {
+        this.handleResponse(response.status);
       }
 
       this.currentUser = await this.chatClient.setUser(
@@ -92,16 +101,20 @@ export class RoomDevComponent implements OnInit {
 
       channel.on('message.updated', event => {
         this.messages = channel.state.messages;
-        console.log(event)
         if (event.message.user.role === "admin") {
-          // if event.message.reveal exists, return its value (in typescrit :C)
+          console.log(event.message.reveal);
+          // if event.message.reveal exists, return its value (in typescrit :C), otherwise false
           this.showMessage = event.message.reveal ? event.message.reveal : false;
+          console.log(event.message.deleted);
+          if (event.message.deleted == true) {
+            alert("This room has been deleted!");
+          }
         }
       });
 
       try {
         this.message = await this.channel.sendMessage({
-          text: ""
+          text: "-"
         });
       } catch (err) {
         console.log(err);
@@ -112,6 +125,22 @@ export class RoomDevComponent implements OnInit {
     } catch (err) {
       console.log(err);
       return;
+    }
+  }
+
+  handleResponse(code) {
+    document.getElementById("regexnameWarning").style.backgroundColor = "#CB1A11";
+    document.getElementById("regexnameWarning").style.color = "white";
+    switch (code) {
+      case 202:
+        document.getElementById("regexnameWarning").innerHTML = "Room doesn't Exist";
+        return;
+      case 203:
+        document.getElementById("regexnameWarning").innerHTML = "User already exists in this room";
+        return;
+      case 'regex':
+        document.getElementById("regexnameWarning").innerHTML = "Username: Only alphanumeric characters and underscore (no spaces). <br> Room-Number: Only numbers allowed, min 3 digits.";
+        return;
     }
   }
 

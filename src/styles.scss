@@ -1,8 +1,8 @@
   #window {
     min-width: 250px;
     max-width: 250px;
-    min-height: 200px;
-    max-height: 300px;
+    min-height: 560px;
+    max-height: 560px;
     position: relative;
     vertical-align:middle;
   }
@@ -22,10 +22,19 @@
   }
 
   .component2 {
-    min-width: 550px;
-    max-width: 550px;
-    min-height: 200px;
-    max-height: 200px;
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 170px;
+    max-height: 170px;
+    position: relative;
+    vertical-align:middle;
+  }
+
+  .component3 {
+    min-width: 450px;
+    max-width: 450px;
+    min-height: 150px;
+    max-height: 150px;
     position: relative;
     vertical-align:middle;
   }
@@ -42,22 +51,23 @@
     margin: 0;
     padding-bottom: 4px;
     text-shadow: white 0 1px 2px;
+    text-align: center;
   }
 
   .panel {
     background-color: #FAFAFA;
-    border-radius: 16px;
+    border-radius: 30px;
     text-align: center;
     padding: 15px 25px 30px 25px;
-    width: 200px;
+    position: relative;  
   }
   
   .panel2 {
     background-color: #FAFAFA;
-    border-radius: 16px;
+    border-radius: 30px;
     text-align: center;
     padding: 15px 25px 30px 25px;
-    width: 500px;
+    position: relative;
   }
 
   label {
@@ -94,6 +104,7 @@
     background: #D3004B;
     padding: 20px;
     width: 200 !important;
+    text-align: left !important;
   }
   
   ul li {
@@ -102,5 +113,6 @@
     padding: 5px;
     display: inline-block;
     margin-left: 35px;
+    text-align: left !important;
   }
   

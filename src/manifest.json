@@ -1,12 +1,12 @@
 {
-    "name": "Great Extension",
+    "name": "Online Scrum Voting",
     "version": "1.0",
     "icons": {
         "16": "favicon.ico",
         "32": "favicon.ico",
         "64": "favicon.ico"
     },
-    "description": "Build an Extension with Angular",
+    "description": "A that makes the scrum voting process easily available through the miracle of the internet.",
     "manifest_version": 2,
     "browser_action": {
         "default_popup": "index.html"
