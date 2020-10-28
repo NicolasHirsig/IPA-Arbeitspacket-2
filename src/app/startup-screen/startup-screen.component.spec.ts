@@ -8,9 +8,8 @@ describe('StartupScreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StartupScreenComponent ]
-    })
-    .compileComponents();
+      declarations: [StartupScreenComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

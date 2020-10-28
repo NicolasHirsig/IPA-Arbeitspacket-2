@@ -12,9 +12,10 @@
         <h2>Your room number: {{roomnumber}}</h2>
         <button (click)="revealMessages()">Reveal Votes!!</button>
         <button (click)="resetMessages()">Start new round</button>
+        <button (click)="revealVoters()">Reveal Voters that haven't voted</button>
         <br><br><br>
         <ul style="list-style-type:none;">
-            <li *ngFor="let message of messages; let i = index">
+            <li *ngFor="let message of messages; let i = index" [ngClass]="{'re': i != 0}">
                 <p *ngIf="showMessage || i == 0"> {{ message.text }} </p>
             </li>
         </ul>

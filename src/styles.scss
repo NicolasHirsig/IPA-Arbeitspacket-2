@@ -1,118 +1,132 @@
-  #window {
-    min-width: 250px;
-    max-width: 250px;
-    min-height: 560px;
-    max-height: 560px;
-    position: relative;
-    vertical-align:middle;
-  }
+#window {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 560px;
+  max-height: 560px;
+  position: relative;
+  vertical-align: middle;
+}
 
-  body {
-    background: #CFD8DC;
-    font-family: arial Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  }
+body {
+  background: #cfd8dc;
+  font-family: arial Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
 
-  .component {
-    min-width: 550px;
-    max-width: 550px;
-    min-height: 400px;
-    max-height: 400px;
-    position: relative;
-    vertical-align:middle;
-  }
+.component {
+  min-width: 550px;
+  max-width: 550px;
+  min-height: 400px;
+  max-height: 400px;
+  position: relative;
+  vertical-align: middle;
+}
 
-  .component2 {
-    min-width: 400px;
-    max-width: 400px;
-    min-height: 170px;
-    max-height: 170px;
-    position: relative;
-    vertical-align:middle;
-  }
+.component2 {
+  min-width: 400px;
+  max-width: 400px;
+  min-height: 170px;
+  max-height: 170px;
+  position: relative;
+  vertical-align: middle;
+}
 
-  .component3 {
-    min-width: 450px;
-    max-width: 450px;
-    min-height: 150px;
-    max-height: 150px;
-    position: relative;
-    vertical-align:middle;
-  }
+.component3 {
+  min-width: 450px;
+  max-width: 450px;
+  min-height: 150px;
+  max-height: 150px;
+  position: relative;
+  vertical-align: middle;
+}
 
-  p {
-    font-size: 200%;
-  }
-  
-  h1 {
-    font-weight: bold !important;
-    color: #D3004B;
-    font: 30px/1.2 Helvetica, sans-serif;
-    font-size: 250%;
-    margin: 0;
-    padding-bottom: 4px;
-    text-shadow: white 0 1px 2px;
-    text-align: center;
-  }
+p {
+  font-size: 200%;
+}
 
-  .panel {
-    background-color: #FAFAFA;
-    border-radius: 30px;
-    text-align: center;
-    padding: 15px 25px 30px 25px;
-    position: relative;  
-  }
-  
-  .panel2 {
-    background-color: #FAFAFA;
-    border-radius: 30px;
-    text-align: center;
-    padding: 15px 25px 30px 25px;
-    position: relative;
-  }
+h1 {
+  font-weight: bold !important;
+  color: #d3004b;
+  font: 30px/1.2 Helvetica, sans-serif;
+  font-size: 250%;
+  margin: 0;
+  padding-bottom: 4px;
+  text-shadow: white 0 1px 2px;
+  text-align: center;
+}
 
-  label {
-    color: #222;
-    font: 18px/1.4 Helvetica, sans-serif;
-    margin: 0.5em 0;
-    display: inline-block;
-  }
-  
-  form {
-    transition: transform 0.25s ease;
-    width: 563px;
-  }
-  
-  button {
-    padding: 14px 30px;
-    font-size: 200%;
-    font-weight: bold;
-    display: block;
-    border-radius: 8px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-    -webkit-user-select: none;
-    border: 1px solid #AAA;
-    color: #34515E;
-    min-width: 4em;
-    display: inline;
-  }
+label {
+  color: #222;
+  font: 18px/1.4 Helvetica, sans-serif;
+  margin: 0.5em 0;
+  display: inline-block;
+}
 
-  button:hover {
-    background-color: #F50057;
-  }
+form {
+  transition: transform 0.25s ease;
+  width: 563px;
+}
 
-  ul {
-    background: #D3004B;
-    padding: 20px;
-    width: 200 !important;
-    text-align: left !important;
-  }
-  
-  ul li {
-    font-size: 150%;
-    background: #F50057;
-    padding: 5px;
-    display: inline-block;
-    margin-left: 35px;
-    text-align: left !important;
-  }
-  
+button {
+  padding: 14px 30px;
+  font-size: 200%;
+  font-weight: bold;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-user-select: none;
+  border: 1px solid #aaa;
+  color: #34515e;
+  min-width: 4em;
+  display: inline;
+}
+
+button.vote {
+  padding: 14px 30px;
+  float: left;
+}
+
+button:hover {
+  background-color: #f50057;
+}
+
+button:disabled {
+  background-color: #dddddd;
+}
+
+ul {
+  background: #d3004b;
+  padding: 20px;
+  width: 200 !important;
+  height: 10 !important;
+  text-align: left !important;
+}
+
+ul li {
+  font-size: 100%;
+  background: #f50057;
+  padding: 5px;
+  display: inline-block;
+  margin-left: 15px;
+  text-align: left !important;
+}
+
+.panel {
+  background-color: #fafafa;
+  border-radius: 30px;
+  text-align: center;
+  padding: 15px 25px 30px 25px;
+  position: relative;
+}
+
+.panel2 {
+  background-color: #fafafa;
+  border-radius: 30px;
+  text-align: center;
+  padding: 15px 25px 30px 25px;
+  position: relative;
+}
+
+.re {
+  font-size: 170%;
+  background-color: #bd2d60;
+}
