@@ -1,26 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
-import {
-  StreamChat,
-  ChannelData,
-  Message,
-  User,
-  AnyResource,
-} from 'stream-chat';
+import { Component, OnInit } from '@angular/core';
+import { StreamChat, ChannelData, Message, User } from 'stream-chat';
 import axios from 'axios';
-import { type } from 'os';
-import { randomBytes } from 'crypto';
-import { typeofExpr } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-room-dev',
   templateUrl: './room-dev.component.html',
   styleUrls: ['./room-dev.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RoomDevComponent implements OnInit {
   regexuname: RegExp = /^[A-Za-z_]+$/;
@@ -31,17 +16,15 @@ export class RoomDevComponent implements OnInit {
   username;
   roomnumber;
   messages: Message[] = [];
-  channelList: ChannelData[];
   chatClient: any;
   currentUser: User;
   voteStr: string;
   message: any;
-  importantMessage: string;
   showMessage: boolean;
   canvasActive: boolean;
   votes: string[] = ['0.5', '1', '2', '3', '5', '8', '13', '20', '?'];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -74,7 +57,7 @@ export class RoomDevComponent implements OnInit {
           "All rooms deleted :'D";
         return;
       }
-      // calls server on the join route with username, then recieves token and api key
+
       const response = await axios.post('http://localhost:5500/join', {
         username: this.username,
         roomnumber: this.roomnumber,
@@ -111,7 +94,6 @@ export class RoomDevComponent implements OnInit {
 
       channel.on('message.updated', (event) => {
         this.messages = channel.state.messages;
-        console.log(this.messages);
         if (event.message.user.role === 'admin') {
           // if event.message.reveal exists, return its value (in typescrit :C), otherwise false
           this.showMessage = event.message.reveal

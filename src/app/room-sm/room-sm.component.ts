@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StreamChat, ChannelData, Message, User } from 'stream-chat';
 import axios from 'axios';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-room-sm',
@@ -15,7 +14,6 @@ export class RoomSmComponent implements OnInit {
   username;
   roomnumber;
   messages: Message[] = [];
-  newMessage = '';
   channelList: ChannelData[];
   chatClient: any;
   currentUser: User;
@@ -24,9 +22,7 @@ export class RoomSmComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    console.log();
-  }
+  ngOnInit(): void {}
 
   setupRoom(uname: Text, roomnumber: Text) {
     this.username = uname;
@@ -48,7 +44,6 @@ export class RoomSmComponent implements OnInit {
 
   async createChat() {
     try {
-      // calls server on the join route with username, then recieves token and api key
       const response = await axios.post('http://localhost:5500/create', {
         username: this.username,
         roomnumber: this.roomnumber,
@@ -155,7 +150,7 @@ export class RoomSmComponent implements OnInit {
     }
   }
 
-  // checks messages if they have the same value. If they do, display confetti animation
+  // checks messages all have the same value. If they do, display confetti animation
   async addConfetti() {
     const value = this.messages[1].text;
     var counter = 0;
@@ -276,7 +271,7 @@ export class RoomSmComponent implements OnInit {
       console.log(err);
     }
     this.readyToCreate = false;
-    this.messages = []; // emptying the messages array so it dont keep the old ones
+    this.messages = []; // emptying the messages array so it doesn't keep the old ones when creating new channel
   }
 
   // reveals voters that haven't voted yet
