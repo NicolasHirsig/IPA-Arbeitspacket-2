@@ -1,25 +1,42 @@
 <body>
-    <div *ngIf="!readyToCreate" class="panel2">
-        <h1>Create a Room</h1>
-        <label for="uname">Set your Username:</label><br>
-        <input type="text" [(ngModel)]="uname"><br><br>
-        <label> Your room number will be generated randomly</label><br>
-        <p id="regexnameWarning"></p>
-        <button (click)="setupRoom(uname,roomnumber)">Create Room</button>
+  <div *ngIf="!readyToCreate" class="component4">
+    <h1>Create a Room</h1>
+    <br />
+    <div class="panel2">
+      <label for="uname">Set your Username:</label><br />
+      <input type="text" [(ngModel)]="uname" /><br /><br />
+      <label> Your room number will be generated randomly</label><br />
+      <p id="regexnameWarning"></p>
+      <button (click)="setupRoom(uname, roomnumber)">Create Room</button>
     </div>
-    <div *ngIf="readyToCreate" class="panel2 component">
-        <h1>Developers can now Join!</h1>
-        <h2>Your room number: {{roomnumber}}</h2>
-        <button (click)="revealMessages()">Reveal Votes!!</button>
-        <button (click)="resetMessages()">Start new round</button>
-        <button (click)="revealVoters()">Reveal Voters that haven't voted</button>
-        <br><br><br>
-        <ul style="list-style-type:none;">
-            <li *ngFor="let message of messages; let i = index" [ngClass]="{'re': i != 0}">
-                <p *ngIf="showMessage || i == 0"> {{ message.text }} </p>
-            </li>
-        </ul>
-        <button (click)="removeRoom()">remove room</button>
-        <br><br><br>
-    </div>
+  </div>
+  <div *ngIf="readyToCreate" class="panel2 component">
+    <canvas *ngIf="canvasActive" id="canvas"></canvas>
+    <h1>Developers can now Join!</h1>
+    <h2>Your room number: {{ roomnumber }}</h2>
+    <button (click)="revealMessages()">Reveal Votes!!</button>
+    <button (click)="resetMessages()">Start new round</button>
+    <button (click)="revealVoters()">Reveal Voters that haven't voted</button>
+    <br /><br /><br />
+    <ul style="list-style-type: none">
+      <li
+        *ngFor="let message of messages; let i = index"
+        [ngClass]="{ re: i != 0 }"
+      >
+        <p *ngIf="showMessage || i == 0">{{ message.text }}</p>
+      </li>
+    </ul>
+    <button (click)="removeRoom()">Remove room</button>
+    <br><br><br>
+    <div class="dropdown">
+      <button class="option">Options</button>
+      <div class="dropdown-content">
+        <a id="disableconfetti" (click)="disableConfetti()">Confetti enabled</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </div>    
+
+    <br /><br /><br />
+  </div>
 </body>

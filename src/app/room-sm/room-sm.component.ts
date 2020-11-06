@@ -19,6 +19,8 @@ export class RoomSmComponent implements OnInit {
   currentUser: User;
   message: any;
   showMessage: boolean;
+  canvasActive: boolean;
+  InactiveConfetti: boolean = false;
 
   constructor() {}
 
@@ -140,6 +142,7 @@ export class RoomSmComponent implements OnInit {
     this.message.message.text = 'Ø = ' + k;
     this.message.message.reveal = true;
     this.showMessage = true;
+    console.log(this.messages.length);
     if (this.messages.length > 2) {
       this.addConfetti();
     }
@@ -152,107 +155,127 @@ export class RoomSmComponent implements OnInit {
 
   // checks messages all have the same value. If they do, display confetti animation
   async addConfetti() {
-    const value = this.messages[1].text;
-    var counter = 0;
-    for (let i in this.messages) {
-      let j: number = +i;
-      if (this.messages[j + 1] && this.messages[j + 1].text == value) {
-        counter++;
+    if (this.InactiveConfetti == false) {
+      const value = this.messages[1].text;
+      var counter = 0;
+      for (let i in this.messages) {
+        let j: number = +i;
+        if (this.messages[j + 1] && this.messages[j + 1].text == value) {
+          counter++;
+        }
       }
-    }
-    if (counter == this.messages.length - 1) {
-      var canvas = <HTMLCanvasElement>document.getElementById('canvas');
-      canvas.style.display = 'initial';
-      var ctx = canvas.getContext('2d');
-      var W = window.innerWidth;
-      var H = window.innerHeight;
-      canvas.width = W;
-      canvas.height = H;
-      var counter: number = 0;
-      var mp = 70; //max particles
-      var particles = [];
-      for (var i = 0; i < mp; i++) {
-        particles.push({
-          x: Math.random() * W, //x-coordinate
-          y: Math.random() * H, //y-coordinate
-          r: Math.random() * 8 + 1, //radius
-          d: Math.random() * mp, //density
-          color:
-            'rgba(' +
-            Math.floor(Math.random() * 255) +
-            ', ' +
-            Math.floor(Math.random() * 255) +
-            ', ' +
-            Math.floor(Math.random() * 255) +
-            ', 1)',
-        });
-      }
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
+      if (counter == this.messages.length - 1) {
+        this.canvasActive = true;
+        var W = window.innerWidth;
+        var H = window.innerHeight;
+        var canvas = <HTMLCanvasElement>document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = W;
+        canvas.height = H;
+        var counter: number = 0;
+        var mp = 70; //max particles
+        var particles = [];
+        for (var i = 0; i < mp; i++) {
+          particles.push({
+            x: Math.random() * W, //x-coordinate
+            y: Math.random() * H, //y-coordinate
+            r: Math.random() * 8 + 1, //radius
+            d: Math.random() * mp, //density
+            color:
+              'rgba(' +
+              Math.floor(Math.random() * 255) +
+              ', ' +
+              Math.floor(Math.random() * 255) +
+              ', ' +
+              Math.floor(Math.random() * 255) +
+              ', 1)',
+          });
+        }
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
 
-        for (var i = 0; i < mp; i++) {
-          var p = particles[i];
-          ctx.beginPath();
-          ctx.fillStyle = p.color;
-          ctx.moveTo(p.x, p.y);
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
-          ctx.fill();
+          for (var i = 0; i < mp; i++) {
+            var p = particles[i];
+            ctx.beginPath();
+            ctx.fillStyle = p.color;
+            ctx.moveTo(p.x, p.y);
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+            ctx.fill();
+          }
+          counter++;
+          if (counter == 500) {
+            clearInterval(myInterval);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            this.canvasActive = false;
+          }
+          update();
         }
-        counter++;
-        if (counter == 500) {
-          clearInterval(myInterval);
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          canvas.style.display = 'none';
-        }
-        update();
-      }
-      var angle = 0;
-      function update() {
-        angle += 0.01;
-        for (var i = 0; i < mp; i++) {
-          var p = particles[i];
-          p.y += Math.cos(angle + p.d) + 1 + p.r / 2;
-          p.x += Math.sin(angle) * 2;
-          if (p.x > W + 5 || p.x < -5 || p.y > H) {
-            if (i % 3 > 0) {
-              particles[i] = {
-                x: Math.random() * W,
-                y: -10,
-                r: p.r,
-                d: p.d,
-                color: p.color,
-              };
-            } else {
-              if (Math.sin(angle) > 0) {
+        var angle = 0;
+        function update() {
+          angle += 0.01;
+          for (var i = 0; i < mp; i++) {
+            var p = particles[i];
+            p.y += Math.cos(angle + p.d) + 1 + p.r / 2;
+            p.x += Math.sin(angle) * 2;
+            if (p.x > W + 5 || p.x < -5 || p.y > H) {
+              if (i % 3 > 0) {
                 particles[i] = {
-                  x: -5,
-                  y: Math.random() * H,
+                  x: Math.random() * W,
+                  y: -10,
                   r: p.r,
                   d: p.d,
                   color: p.color,
                 };
               } else {
-                particles[i] = {
-                  x: W + 5,
-                  y: Math.random() * H,
-                  r: p.r,
-                  d: p.d,
-                  color: p.color,
-                };
+                if (Math.sin(angle) > 0) {
+                  particles[i] = {
+                    x: -5,
+                    y: Math.random() * H,
+                    r: p.r,
+                    d: p.d,
+                    color: p.color,
+                  };
+                } else {
+                  particles[i] = {
+                    x: W + 5,
+                    y: Math.random() * H,
+                    r: p.r,
+                    d: p.d,
+                    color: p.color,
+                  };
+                }
               }
             }
           }
         }
-      }
-      //animation loop
-      var myInterval = setInterval(draw, 10);
+        //animation loop
+        var myInterval = setInterval(draw, 10);
 
-      this.message.message.confetti = true;
-      try {
-        await this.chatClient.updateMessage(this.message.message);
-      } catch (err) {
-        console.log(err);
+        this.message.message.confetti = true;
+        try {
+          await this.chatClient.updateMessage(this.message.message);
+        } catch (err) {
+          console.log(err);
+        }
       }
+    }
+  }
+
+  disableConfetti() {
+    console.log(this.InactiveConfetti);
+    if (this.InactiveConfetti == false) {
+      console.log('beep 2');
+      this.InactiveConfetti = true;
+      document.getElementById('disableconfetti').style.backgroundColor =
+        '#9fa3ab';
+      document.getElementById('disableconfetti').innerHTML =
+        'Confetti disabled';
+    } else {
+      console.log('beep 3');
+      this.InactiveConfetti = false;
+      document.getElementById('disableconfetti').style.backgroundColor =
+        '#white';
+      document.getElementById('disableconfetti').innerHTML = 'Confetti enabled';
     }
   }
 
@@ -272,6 +295,7 @@ export class RoomSmComponent implements OnInit {
     }
     this.readyToCreate = false;
     this.messages = []; // emptying the messages array so it doesn't keep the old ones when creating new channel
+    this.showMessage = false;
   }
 
   // reveals voters that haven't voted yet
