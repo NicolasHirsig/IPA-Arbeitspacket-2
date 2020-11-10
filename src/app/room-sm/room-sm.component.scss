@@ -1,14 +1,22 @@
+.rmbtn {
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  position: relative;
+}
+
 .option {
   background-color: black;
   color: white;
   border-radius: 0%;
   font-size: 130%;
   text-align: left;
+  border-radius: 8px;
 }
 
 .dropdown {
   position: relative;
-  display: inline-block;
+  float: left;
 }
 
 .dropdown-content {

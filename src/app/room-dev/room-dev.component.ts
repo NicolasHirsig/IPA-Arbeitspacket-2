@@ -65,12 +65,12 @@ export class RoomDevComponent implements OnInit {
 
       const { token } = response.data;
       console.log(response.status);
-      const apiKey = response.data.api_key;
-      this.chatClient = new StreamChat(apiKey);
-
       if (response.status != 200) {
         this.handleResponse(response.status);
+        return;
       }
+      const apiKey = response.data.api_key;
+      this.chatClient = new StreamChat(apiKey);
 
       this.currentUser = await this.chatClient.setUser(
         {

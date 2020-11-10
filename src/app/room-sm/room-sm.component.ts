@@ -166,15 +166,16 @@ export class RoomSmComponent implements OnInit {
       }
       if (counter == this.messages.length - 1) {
         this.canvasActive = true;
+        // await this.delay(0);
         var W = window.innerWidth;
         var H = window.innerHeight;
+        var counter: number = 0;
+        var mp = 70; //max particles
+        var particles = [];
         var canvas = <HTMLCanvasElement>document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
         canvas.width = W;
         canvas.height = H;
-        var counter: number = 0;
-        var mp = 70; //max particles
-        var particles = [];
         for (var i = 0; i < mp; i++) {
           particles.push({
             x: Math.random() * W, //x-coordinate
@@ -203,6 +204,7 @@ export class RoomSmComponent implements OnInit {
             ctx.fill();
           }
           counter++;
+          console.group(counter);
           if (counter == 500) {
             clearInterval(myInterval);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -261,7 +263,11 @@ export class RoomSmComponent implements OnInit {
     }
   }
 
-  disableConfetti() {
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  toggleConfetti() {
     console.log(this.InactiveConfetti);
     if (this.InactiveConfetti == false) {
       console.log('beep 2');
@@ -282,6 +288,7 @@ export class RoomSmComponent implements OnInit {
   async removeRoom() {
     try {
       this.message.message.deleted = true;
+      this.message.message.text = 'This Channel has been deleted';
       try {
         await this.chatClient.updateMessage(this.message.message);
       } catch (err) {

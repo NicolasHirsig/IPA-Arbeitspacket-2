@@ -93,7 +93,9 @@ app.post("/join", async (req, res) => {
   const channels = await serverSideClient.queryChannels({ id: roomnumber });
   if (channels.length) {
     for (channeluser in channels[0].state.members) {
+      console.log("yeah that happened right? 222")
       if (channeluser == username) {
+        console.log("yeah that happened right?")
         return res.status(203).json();
       }
     }

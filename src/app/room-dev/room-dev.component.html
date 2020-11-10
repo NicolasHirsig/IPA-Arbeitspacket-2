@@ -10,10 +10,11 @@
     <button (click)="setupRoom(uname, roomnumber)">Join Room</button>
   </div>
   <div *ngIf="readyToJoin" class="panel2 component">
-    <canvas style="display: none;" id="canvas"></canvas>
-      <h1>You can vote now!</h1>
-      <h2>Your room number: {{ roomnumber }}</h2>
-      <br /><br /><br />
+    <canvas style="display: none" id="canvas"></canvas>
+    <h1>You can vote now!</h1>
+    <h2>Your room number: {{ roomnumber }}</h2>
+    <br />
+    <div style="background-color: black;">
       <div *ngFor="let vote of votes">
         <button
           class="vote"
@@ -23,13 +24,17 @@
           {{ vote }}
         </button>
       </div>
-      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-      <p>
-        Server Message: Hello
-        {{ channel.state.messages[channel.state.messages.length - 1].user.id }}!
-      </p>
+    </div>
+    <br /><br /><br /><br /><br /><br /><br /><br />
+    <p>
+      Server Message: Hello
+      {{ channel.state.messages[channel.state.messages.length - 1].user.id }}!
+    </p>
     <ul style="list-style-type: none">
-      <li *ngFor="let message of messages; let i = index" [ngClass]="{'re': i != 0}">
+      <li
+        *ngFor="let message of messages; let i = index"
+        [ngClass]="{ re: i != 0 }"
+      >
         <p *ngIf="showMessage || message.user.id == username || i == 0">
           {{ message.text }}
         </p>
